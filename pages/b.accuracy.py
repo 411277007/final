@@ -54,13 +54,13 @@ for name, model in models.items():
     accuracy = accuracy_score(y_test, y_pred) * 100   
     report = classification_report(y_test, y_pred, output_dict=True)
     macro_avg = report["macro avg"]["f1-score"]
-    f1 = f1_score(y_test, y_pred, average='weighted')
+
     
     results.append({
         "model": name,
         "accuracy (%)": f"{accuracy:.2f}%",
         "macro avg": round(macro_avg, 4),
-        "f1 score": round(f1, 4)
+
     })
 
 results_df = pd.DataFrame(results)
