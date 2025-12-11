@@ -1,18 +1,14 @@
 import streamlit as st
 
-# 頁面配置 
 st.set_page_config(
     page_title="線上學習能力分析報告",
     page_icon="🧠",
     layout="wide"
 )
 
-#標題與簡介
-
 st.title("🧠 關於線上學習能力之預測與關鍵因素分析")
 st.markdown("---")
 
-# 應用程式簡介區塊
 st.header("🚀 應用程式簡介與目的")
 st.write("""
 **Streamlit 是一個專為機器學習和數據科學專案量身打造的開源應用程式框架。**
@@ -22,7 +18,7 @@ st.write("""
 2.  **識別** 影響學習能力的關鍵因素（例如：自我效能、學習時長等）。
 """)
 
-# 導覽/下一步區塊
+
 st.subheader("💡 報告導覽指引")
 st.markdown("""
 請依序查看以下分析報告，以全面了解模型的表現和結果：
