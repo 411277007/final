@@ -14,7 +14,6 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.neural_network import MLPClassifier
 st.title("六模型 Macro-Average ROC 曲線比較")
 
-# 讀取資料
 DATA_PATH = "new_fixer210_edudata.csv"
 TARGET = "Adaptivity Level"
 
@@ -28,25 +27,21 @@ selected_features = [
 X = df[selected_features]
 y = df[TARGET]
 
-# Label Encoding & Binarize
-le = LabelEncoder()
-y_encoded = le.fit_transform(y)
-classes = le.classes_
+y_encoded = y.values     
+classes = sorted(y.unique())
 n_classes = len(classes)
-y_bin = label_binarize(y_encoded, classes=range(n_classes))
+
+from sklearn.preprocessing import label_binarize
+y_bin = label_binarize(y_encoded, classes=classes)
 
 
-# 資料標準化
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
-#  Train/Test split
 X_train, X_test, y_train, y_test = train_test_split(
     X_scaled, y_bin, test_size=0.2, random_state=42, stratify=y_encoded
 )
 
-
-# 定義六模型
 
 models = [
     ("Random Forest", RandomForestClassifier(n_estimators=100, random_state=42)),
@@ -58,10 +53,8 @@ models = [
 ]
 
 
-# 訓練 + 計算 Macro-Average ROC
-
 plt.figure(figsize=(10, 8))
-st.write("訓練各模型並計算 AUC...")
+st.write("訓練各模型中...")
 
 for name, model in models:
    
