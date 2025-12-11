@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
 from sklearn.svm import SVC
@@ -14,9 +13,6 @@ import seaborn as sns
 
 st.title("六模型混淆矩陣")
 
-
-
-
 DATA_PATH = "new_fixer210_edudata.csv"
 TARGET = "Adaptivity Level"
 
@@ -24,15 +20,9 @@ df = pd.read_csv(DATA_PATH)
 X = df.drop(columns=[TARGET])
 y = df[TARGET]
 
-
-# 資料切分
-
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
 )
-
-
-#  六個模型
 
 models = {
     "Random Forest": RandomForestClassifier(n_estimators=100, random_state=42),
@@ -54,16 +44,12 @@ models = {
 
 model_names = list(models.keys())
 
-
-
-
 rows = 3   
 cols_per_row = 2  
-
 index = 0
 
 for row in range(rows):
-    cols = st.columns(cols_per_row)  # 建立兩欄
+    cols = st.columns(cols_per_row) 
     
     for col in cols:
         if index >= len(model_names):
@@ -72,9 +58,6 @@ for row in range(rows):
         model_name = model_names[index]
         model = models[model_name]
 
-        
-        # 標準化
-        
         if model_name in ["SVM","ANN"]:
             scaler = StandardScaler()
             X_train_scaled = scaler.fit_transform(X_train)
@@ -85,16 +68,9 @@ for row in range(rows):
             model.fit(X_train, y_train)
             y_pred = model.predict(X_test)
 
-        # 計算混淆矩陣
         cm = confusion_matrix(y_test, y_pred)
 
-        # 計算評估指標
-        acc = accuracy_score(y_test, y_pred)
-        prec = precision_score(y_test, y_pred, average='weighted')
-        rec = recall_score(y_test, y_pred, average='weighted')
-        f1 = f1_score(y_test, y_pred, average='weighted')
 
-        # 在第 row 列，第 col 欄顯示
         with col:
           
             fig, ax = plt.subplots(figsize=(4, 3))
