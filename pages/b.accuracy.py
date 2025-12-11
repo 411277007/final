@@ -15,14 +15,10 @@ st.title(" 多模型分類結果比較 ")
 DATA_PATH = "new_fixer210_edudata.csv"       
 TARGET = "Adaptivity Level"     
 
-# 讀取資料
 df = pd.read_csv(DATA_PATH)
 
 st.write(f"資料檔案：**{DATA_PATH}**")
 st.write(f"預測欄位：**{TARGET}**")
-
-
-# 資料分割
 
 X = df.drop(columns=[TARGET])
 y = df[TARGET]
@@ -30,9 +26,6 @@ y = df[TARGET]
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
-
-
-# 定義模型
 
 models = {
     "Random Forest": RandomForestClassifier(n_estimators=100, random_state=42),
@@ -52,17 +45,13 @@ models = {
         early_stopping=True),
     }
 
-
-
-# 訓練 & 計算指標
-
 results = []
 
 for name, model in models.items():
-    model.fit(X_train, y_train)         # 訓練模型
-    y_pred = model.predict(X_test)      # 預測
+    model.fit(X_train, y_train)         
+    y_pred = model.predict(X_test)      
     
-    accuracy = accuracy_score(y_test, y_pred) * 100   # 百分比
+    accuracy = accuracy_score(y_test, y_pred) * 100   
     report = classification_report(y_test, y_pred, output_dict=True)
     macro_avg = report["macro avg"]["f1-score"]
     f1 = f1_score(y_test, y_pred, average='weighted')
@@ -73,9 +62,6 @@ for name, model in models.items():
         "macro avg": round(macro_avg, 4),
         "f1 score": round(f1, 4)
     })
-
-
-# 顯示表格
 
 results_df = pd.DataFrame(results)
 st.subheader("模型指標比較表")
